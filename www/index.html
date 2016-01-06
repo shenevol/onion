@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<!-- CSP support mode (required for Windows Universal apps): https://docs.angularjs.org/api/ng/directive/ngCsp -->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- JS dependencies (order matters!) -->
+    <script src="scripts/appBundle.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/onsen/js/onsenui.js"></script>
+
+    <!-- CSS dependencies -->
+    <link rel="stylesheet" href="lib/onsen/css/onsenui.css" />
+    <link rel="stylesheet" href="lib/onsen/css/onsen-css-components-blue-basic-theme.css" />
+
+    <!-- CSP support mode (required for Windows Universal apps) -->
+    <!-- <link rel="stylesheet" href="lib/angular/angular-csp.css" /> -->
+
+
+    <!-- --------------- App init --------------- -->
+
+    <title>Onsen UI</title>
+
+    <script>
+        var module = ons.bootstrap('my-app', ['onsen.directives']);
+        module.controller('AppController', function ($scope) { });
+        module.controller('PageController', function ($scope) {
+            ons.ready(function () {
+                var targetElement = document.getElementById("#click");
+                ons.createPopover('popover.html').then(
+                    function (popover) {
+                        popover.show(targetElement);
+                    });
+            });
+        });
+
+        module.controller('ClickController', function ($scope) { 
+            $scope.foo = function () {
+                alert("wowowoowowowo!");
+            }
+        
+        });
+    </script>
+
+</head>
+
+<body ng-controller="AppController">
+
+    <ons-navigator title="Navigator" var="myNavigator">
+        <ons-page ng-controller="ClickController">
+            <ons-toolbar>
+                <div class="center">Simple Navigation</div>
+            </ons-toolbar>
+            <div style="text-align: center">
+                <br>
+                <ons-button modifier="light" onclick="myNavigator.pushPage('page1.html', { animation : 'slide' } )">
+                    Push Page
+                </ons-button>
+                <ons-button id="click" ng-click="foo()">Click me!</ons-button>
+            </div>
+
+        </ons-page>
+    </ons-navigator>
+
+    <ons-template id="page1.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button>Back</ons-back-button>
+                </div>
+                <div class="center">Page 2</div>
+            </ons-toolbar>
+
+            <div style="text-align: center">
+                <br />
+                <ons-button modifier="light" onclick="myNavigator.popPage()">
+                    Pop Page
+                </ons-button>
+            </div>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="popover.html">
+        <ons-popover style="color:mediumvioletred">
+            <ons-page>
+                <ons-list-item>option1</ons-list-item>
+                <ons-list-item>option2</ons-list-item>
+            </ons-page>
+        </ons-popover>
+    </ons-template>
+
+</body>
+</html>
