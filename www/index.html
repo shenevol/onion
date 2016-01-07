@@ -26,14 +26,16 @@
     <script>
         var module = ons.bootstrap('my-app', ['onsen.directives']);
         module.controller('AppController', function ($scope) { });
-        module.controller('PageController', function ($scope) {
-            ons.ready(function () {
-                var targetElement = document.getElementById("#click");
+        module.controller('PopController', function ($scope) {
+                 
                 ons.createPopover('popover.html').then(
                     function (popover) {
-                        popover.show(targetElement);
+                        $scope.popover = popover;
                     });
-            });
+                $scope.show = function (e) {
+                    $scope.popover.show(e);
+                }
+            
         });
 
         module.controller('ClickController', function ($scope) { 
@@ -43,11 +45,7 @@
         
         });
 
-        module.controller('popController', function ($scope) {
-            ons.createPopover('popover.html').then(function (popover) {
-                $scope.popover = popover;
-            });
-        });
+        
     </script>
 
 </head>
@@ -67,8 +65,8 @@
                 <ons-button id="click" ng-click="foo()">Click me!</ons-button>
                 
             </div>
-            <div ng-controller="popController">
-                <ons-button ng-click="popover.show($event)">Popup!</ons-button>
+            <div ng-controller="PopController">
+                <ons-button id="pop" ng-click="show('#pop')">Popup!</ons-button>
             </div>
 
         </ons-page>
@@ -92,8 +90,8 @@
         </ons-page>
     </ons-template>
 
-    <ons-template id="popover.html">
-        <ons-popover style="color:mediumvioletred">
+    <ons-template id="popover.html" >
+        <ons-popover style="color:mediumvioletred" cancelable>
             <ons-page>
                 <ons-list-item>option1</ons-list-item>
                 <ons-list-item>option2</ons-list-item>
